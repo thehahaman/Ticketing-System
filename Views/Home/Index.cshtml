@@ -1,0 +1,20 @@
+﻿@model Blockbuster_Rental_Software.Models.UserModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    @if (Model == null)
+    {
+        <h1 class="display-4">Welcome To The Ticketing System!</h1>
+
+    } else {
+        <h1 class="display-4">Welcome To The Ticketing System @Model.FirstName !</h1>
+    }
+    <br/>
+    <br />
+    <div class="display-4">
+        <a asp-action="products"><button class="btn btn-lg btn-primary" type="button">View Tickets</button></a>
+     </div>
+</div>

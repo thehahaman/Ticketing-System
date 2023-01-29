@@ -1,0 +1,44 @@
+﻿@model Blockbuster_Rental_Software.ViewModels.ProductsViewModel
+
+@Html.AntiForgeryToken()
+
+
+<h1>All Tickets</h1>
+
+<table class="table table-hover">
+    <tr>
+        <th>Number</th>
+        <th>Title</th>
+        <th>Date Opened</th>
+        <th>Opened By</th>
+        <th></th>
+    </tr>
+
+    @{
+        int i = 0;
+    }
+    @foreach(Product p in Model.productList)
+    {
+        
+        <tr>
+                <td>@p.Id</td>
+                <td>@p.Name</td>
+                <td>@p.Date.ToShortDateString()</td>
+                <td>@Model.Users[i].FirstName @Model.Users[i].LastName</td>
+                   
+                <td>
+
+
+                @using (Html.BeginForm("editView", "Product", routeValues: new { pId = p.Id, openedByUserName = Model.Users[i].FirstName + " " + Model.Users[i].LastName, title  = p.Name, date = p.Date, assignedDeveloper = p.assignedDeveloper}))
+                    {<button type="submit" class="btn btn-info">View</button> }
+               
+                
+                </td>
+            
+            </tr>
+            i++;
+        
+    }
+
+
+</table>

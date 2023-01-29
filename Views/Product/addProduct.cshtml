@@ -1,0 +1,36 @@
+﻿@model Blockbuster_Rental_Software.ViewModels.ProductsViewModel
+
+<h4>Create Ticket</h4>
+<hr />
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="processAddProduct">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="@Model.productList[0].Name" class="control-label">Title</label>
+                <input asp-for="@Model.productList[0].Name" class="form-control" />
+                <span asp-validation-for="@Model.productList[0].Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.productList[0].Description"  for="exampleTextarea" class="form-label mt-4">Description</label>
+                <textarea asp-for="@Model.productList[0].Description" class="form-control" id="exampleTextarea" rows="3"></textarea>
+
+                <span asp-validation-for="@Model.productList[0].Description" class="text-danger"></span>
+            </div>
+            <br/>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

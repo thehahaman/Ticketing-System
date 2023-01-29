@@ -1,0 +1,92 @@
+﻿@model Blockbuster_Rental_Software.Models.Product
+
+<h4>Edit Product</h4>
+<hr />
+<dl class="row">
+        <dt class = "col-sm-2">
+            Ticket ID
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.openedBy)
+        </dt>
+        <dd class = "col-sm-10">
+            @ViewBag.openedByUserName
+        </dd>
+        <dt class = "col-sm-2">
+            Date created
+        </dt>
+        <dd class = "col-sm-10">
+            @Model.Date.ToLongDateString()
+            @Model.Date.ToShortTimeString()
+        </dd>
+        <dt class="col-sm-2">
+            Notes
+
+        </dt>
+        @foreach(Notes note in Model.notes)
+        {
+            <dd class="col-sm-10">
+                @note.date.ToShortDateString() @note.date.ToShortTimeString() | @note.userName<br/>
+                @note.text<hr />
+            </dd>
+
+            <dt class="col-sm-2">
+        
+
+            </dt>
+        }
+    
+
+    </dl>
+
+<div class="row">
+    <div class="col-md-10">
+        
+            @using (Html.BeginForm("edit", "product", routeValues: new { pId = Model.Id }))
+            {
+                <label for="exampleTextarea" class="form-label mt-4">Add Notes</label>
+                <textarea name="note" class="form-control" id="exampleTextarea" rows="10" required></textarea>
+
+                <br />
+                <input type="submit" value="Add Note" class="btn btn-primary" />
+            
+
+            }
+        <br />
+
+            @if(Context.Request.Cookies.ContainsKey("authToken"))
+            {
+                string? token;
+                Context.Request.Cookies.TryGetValue("authToken", out token);
+                DB db = new DB();
+                List<object> reader = db.QueryRow("SELECT UserID, isDeveloper FROM georgedatabase.users WHERE SessionToken = '"+token+"';");
+                if ((int)reader[0] == Model.openedBy || ((int)reader[0] == Model.assignedDeveloper && Convert.ToBoolean(reader[1]) ))
+                {
+                    
+                    @using (Html.BeginForm("deleteProduct", "products", routeValues: new { pId = Model.Id }))
+                    {
+                        <button type="submit" class="btn btn-info">Delete Ticket</button>
+                    }  
+                }
+            }
+        
+    </div>
+</div>
+
+<div>
+    <br />
+    <a asp-action="products">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
